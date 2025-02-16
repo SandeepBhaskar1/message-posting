@@ -6,7 +6,7 @@ const Registration = () => {
     ? import.meta.env.VITE_BACKEND_CLOUD_URL 
     : import.meta.env.VITE_BACKEND_LOCAL_URL;
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({
     firstName: '',
@@ -33,27 +33,33 @@ const Registration = () => {
         },
         body: JSON.stringify(user)
       });
-      const result = await response.json();
+
+      const result = await response.json();  // Capture the server's response
       if (response.ok) {
         alert('Registration Successful!');
-        navigate('/login')
+        navigate('/login');
       } else {
-        alert('Error occurred while registering the user.');
+        // Log detailed error from backend
+        console.error('Registration failed:', result);
+        alert(result.message || 'Error occurred while registering the user.');
       }
-    } catch (Error) {
+    } catch (error) {
+      // Handle unexpected errors
+      console.error('An error occurred:', error);
       alert('An error occurred, please try again.');
     }
   };
 
-  const navigateLogin =()=> {
-    navigate('/login')
-  } 
+  const navigateLogin = () => {
+    navigate('/login');
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow p-8">
         <h1 className="text-2xl font-bold text-center mb-6">User Registration</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Form Inputs */}
           <label htmlFor="firstName" className="block">
             First Name:
             <input
